@@ -20,7 +20,7 @@ class SocketClient(host: String, port: Int) {
         var line = scanner.nextLine()
         while(line.isNotEmpty()) {
             writer.println(line)
-            println("Respons: '${reader.readLine()}'")
+            println(reader.readLine())
             line = scanner.nextLine()
         }
 
