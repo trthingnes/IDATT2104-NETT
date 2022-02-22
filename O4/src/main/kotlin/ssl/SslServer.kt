@@ -11,7 +11,7 @@ fun main() {
 
 /*
  ! Has to run with VM options:
- ! -Djavax.net.ssl.keyStore=$MODULE_DIR$/../../keystore/examplestore -Djavax.net.ssl.keyStorePassword=password
+ ! -Djavax.net.ssl.keyStore=$MODULE_DIR$/../../keystore/serverkeystore.jks -Djavax.net.ssl.keyStorePassword=password
  */
 class SslServer {
     private val port = 8000

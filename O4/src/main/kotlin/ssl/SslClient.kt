@@ -12,7 +12,7 @@ fun main() {
 
 /*
  ! Has to run with VM options:
- ! -Djavax.net.ssl.trustStore=$MODULE_DIR$/../../keystore/examplestore -Djavax.net.ssl.trustStorePassword=password
+ ! -Djavax.net.ssl.trustStore=$MODULE_DIR$/../../keystore/clienttruststore.jks -Djavax.net.ssl.trustStorePassword=password
  */
 class SslClient {
     private val port = 8000
