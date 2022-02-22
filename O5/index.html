@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C++ compiler</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+<div class="container content mt-6">
+    <div class="has-text-centered mb-5">
+        <h1>C++ Online Compiler</h1>
+        <strong>Write your code below to have it compiled and run.</strong>
+    </div>
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column is-half">
+            <form id="form" name="codeform">
+                <div class="field">
+                    <label for="code" class="label">Source code</label>
+                    <div class="control">
+                        <textarea id="code" class="input"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link mt-3">Compile & Run</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="column"></div>
+    </div>
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column is-half">
+            <div class="field">
+                <label for="output" class="label">Output</label>
+                <div class="control">
+                    <textarea id="output" class="input" disabled></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="column"></div>
+    </div>
+</div>
+</body>
+<script>
+    document.getElementById("form").addEventListener("submit", function(event){
+        event.preventDefault()
+
+        const code = document.getElementById("code").value
+        const url = "http://localhost:8888/compile"
+        const method = "post"
+        const request = new XMLHttpRequest()
+
+        request.open(method, url)
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+        request.responseType = "json"
+        request.onload = () => {
+            document.getElementById("output").value = request.response.output
+        }
+        request.send(JSON.stringify({ "code": code }))
+    });
+</script>
+</html>
