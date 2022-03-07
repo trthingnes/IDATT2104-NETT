@@ -6,6 +6,7 @@ const host = "localhost"
 const port = 8888
 
 let sockets: Array<Duplex> = []
+let ports: Array<number> = []
 let server: Server = createServer((message) => {
     console.info(`Client connected from ${message.socket.remotePort}.`)
 })
@@ -38,6 +39,7 @@ function wsOnUpgrade(request: IncomingMessage, socket: Duplex) {
 
     socket.write(headers.join("\r\n").concat("\r\n\r\n"))
     sockets.push(socket)
+    ports.push(request.socket.remotePort ? request.socket.remotePort : 0)
 
     socket.on("data", (buffer) => wsOnData(buffer, socket))
 }
@@ -87,14 +89,13 @@ function wsOnData(buffer: Buffer, socket: Duplex) {
         let message = JSON.parse(data.toString())
 
         if (message) {
-            let response = generateResponseMessage({
-                message: message.message,
-            })
-            console.log(response.toString())
             sockets.forEach((s) => {
-                s.write(response, () => {
-                    console.log("Write success")
-                })
+                s.write(
+                    generateResponseMessage({
+                        message: message.message,
+                        from: ports[sockets.indexOf(socket)],
+                    })
+                )
             })
         } else {
             sockets = sockets.filter((s) => s !== socket)

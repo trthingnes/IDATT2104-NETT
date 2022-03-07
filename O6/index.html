@@ -7,25 +7,85 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
         />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+        />
+        <title>Chat service</title>
     </head>
     <body>
+        <div class="container content mt-6">
+            <div class="has-text-centered mb-5">
+                <h1>Chat service</h1>
+                <strong>Write a chat message for the others below.</strong>
+            </div>
+            <div class="columns">
+                <div class="column"></div>
+                <div class="column is-half">
+                    <div class="field">
+                        <label for="message" class="label">Message</label>
+                        <div class="control">
+                            <input id="message" type="text" class="input" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button id="send" class="button is-link mt-3">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column"></div>
+            </div>
+            <div class="columns">
+                <div class="column"></div>
+                <div class="column is-half">
+                    <div class="field">
+                        <label for="incoming" class="label"
+                            >Messages</label
+                        >
+                        <div class="control">
+                            <textarea
+                                id="incoming"
+                                class="input"
+                                disabled
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="column"></div>
+            </div>
+        </div>
         <script>
             let ws = new WebSocket("ws://localhost:8888", "json")
 
             ws.onopen = function (event) {
                 console.info("Opened WebSocket.")
-                console.log(event)
             }
+
+            let incomingBox = document.getElementById("incoming")
 
             ws.onmessage = function (event) {
                 console.info("Received message.")
                 console.log(event)
+                let object = JSON.parse(event.data)
+                console.log(object)
+                incomingBox.value += `<${object.from}>: ${object.message}\n`
             }
 
             ws.onclose = function (event) {
-                console.info("Closed WebSocket")
-                console.log(event)
+                console.info("Closed WebSocket.")
+            }
+
+            let sendButton = document.getElementById("send")
+            let messageBox = document.getElementById("message")
+
+            sendButton.onclick = function (event) {
+                let json = `{ "message": "${messageBox.value}" }`
+                messageBox.value = ""
+                ws.send(json)
+                console.info("Sent message.")
             }
         </script>
     </body>
