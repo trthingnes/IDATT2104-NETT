@@ -1,31 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <script>
-        let ws = new WebSocket("ws://localhost:8888")
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            let ws = new WebSocket("ws://localhost:8888", "json")
 
-        ws.onopen = function(event) {
-            console.info("Successfully opened WebSocket.")
-        }
+            ws.onopen = function (event) {
+                console.info("Opened WebSocket.")
+                console.log(event)
+            }
 
-        ws.onmessage = function(event) {
-            console.log(event)
-        }
+            ws.onmessage = function (event) {
+                console.info("Received message.")
+                console.log(event)
+            }
 
-        ws.onclose = function(event) {
-            console.log("Closed WebSocket")
-        }
-
-        ws.onerror = function (event) {
-            console.error(event)
-        }
-    </script>
-</body>
+            ws.onclose = function (event) {
+                console.info("Closed WebSocket")
+                console.log(event)
+            }
+        </script>
+    </body>
 </html>
